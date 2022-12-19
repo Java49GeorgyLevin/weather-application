@@ -1,9 +1,12 @@
 export class WeatherDataProcessor {
 #cityGeocodes
 constructor() {
-    this.#cityGeocodes = [{city:"Rehovot", latitude:31.046, longitude:34.851},
-     {city:"Haifa", latitude:31.046, longitude:34.851}, {city: "Jerusalem"},
-    {}, {}] //todo fill this array from Internet
+    this.#cityGeocodes = [{city:"Tiberias", latitude: 32.7922, longitude: 35.5312},
+    {city:"Petah Tikva", latitude: 32.0866, longitude: 34.8851},
+    {city:"Maale Adumim", latitude: 31.777369, longitude: 35.297955},
+    {city:"Gedera", latitude: 31.81456 , longitude: 34.77998},
+    {city:"Eilat", latitude: 29.5581, longitude: 34.9482}]
+
 }
     getData(requestObject) {
         //{city, dateFrom, dateTo, hoursFrom, hoursTo}

@@ -4,10 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/weather.css">
     <title>Document</title>
 </head>
 <body>
-    <input type="date" min="2022-12-19" max="2023-01-03">
+    <section id="data-input" class="data-input">
+    <form id="enter-data">
+        <select name="select-sity" id="select-sity" required>
+            <option value hidden selected disabled>--Select sity--</option>
+            <option value="Tiberias">Tiberias</option>
+            <option value="Petah Tikva">Petah Tikva</option>
+            <option value="Maale Adumim">Maale Adumim</option>
+            <option value="Gedera">Gedera</option>
+            <option value="Eilat">Eilat</option>
+        </select>
+        <div class="two-inputs">
+            <input type="date" name="date-from" min="2022-12-19" max="2023-01-03" id="date-from" required>
+            <p>Input date from</p>
+            <input type="date" name="date-to" min="2022-12-19" max="2023-01-03" id="date-to" required>
+            <p>Input date to</p>
+        </div>
+        <div class="two-inputs">
+            <input type="time" name="time-from" id="time-from" required>
+        <p>Input hour from</p>
+        <input type="time" name="time-to" id="time-to" required>
+        <p>Input hour to</p>
+        </div>
+    <button type="submit">Submit</button>
+    <button type="reset">Reset</button>
+    </form>
+    <p class="error-message" id="error-message"></p>
+</section>
+<section id="data-output" class="data-output">OUTPUT</section>
     <script src="src/main.js" type="module"></script>
 </body>
 </html>

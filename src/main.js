@@ -14,7 +14,8 @@ import { WeatherDataProcessor } from "./data/WeatherDataProcessor.js";
 // let promiseData = promiseResponse.then(response=>response.json());
 // let dataProcessing = promiseData.then(data => console.log(data.hourly.time
 //     ))
-const params = {/*required params for form*/};
+const params = {idEnterData: "enter-data", idSelectSity: "select-sity", idDateFrom: "date-from", idDateTo: "date-to",
+idTimeFrom: "time-from", idTimeTo: "time-to", idErrorMessage: "error-message"};
 const weatherProcessor = new WeatherDataProcessor();
 const dataForm = new DataForm(params);
 const temperatureList = new TemperaturesList("idList");

@@ -1,0 +1,17 @@
+body {
+    display: flex;
+    flex-direction: row;
+}
+.two-inputs {
+    display: flex;
+    flex-direction: column;
+    width: 20vh;
+}
+select {
+    width: 20vh;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+}
+.data-output {
+    padding: 10vh;
+}
