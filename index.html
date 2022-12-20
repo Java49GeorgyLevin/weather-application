@@ -25,9 +25,9 @@
             <p>Input date to</p>
         </div>
         <div class="two-inputs">
-            <input type="time" name="time-from" id="time-from" required>
+            <input type="number" name="time-from" id="time-from" required>
         <p>Input hour from</p>
-        <input type="time" name="time-to" id="time-to" required>
+        <input type="number" name="time-to" id="time-to" required>
         <p>Input hour to</p>
         </div>
     <button type="submit">Submit</button>
@@ -35,7 +35,9 @@
     </form>
     <p class="error-message" id="error-message"></p>
 </section>
-<section id="data-output" class="data-output">OUTPUT</section>
+<section id="data-output" class="data-output">OUTPUT
+    <ul class="weather-list" id="weather-list"></ul>
+</section>
     <script src="src/main.js" type="module"></script>
 </body>
 </html>

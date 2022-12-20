@@ -1,10 +1,15 @@
 export class TemperaturesList {
-    //TODO similar to EmployeesList
+    #listElement;
     constructor(idList) {
-        //TODO
+        this.#listElement = document.getElementById(idList);
     }
     showTemperatures(dataArray) {
-        //TODO
-        //{city, objects: [{date,hour,temperature},...]}
+        this.#listElement.innerHTML = listOfTemperatures(dataArray);
     }
+}
+function listOfTemperatures(dataArray) {
+    return dataArray.map(el => {
+        return `<li class="details-list">
+                Data: ${el.date} Time: ${el.hour} Temperature: ${el.temperature}</p>
+                </li>`});
 }

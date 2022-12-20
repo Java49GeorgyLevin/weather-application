@@ -18,7 +18,7 @@ const params = {idEnterData: "enter-data", idSelectSity: "select-sity", idDateFr
 idTimeFrom: "time-from", idTimeTo: "time-to", idErrorMessage: "error-message"};
 const weatherProcessor = new WeatherDataProcessor();
 const dataForm = new DataForm(params);
-const temperatureList = new TemperaturesList("idList");
+const temperatureList = new TemperaturesList("weather-list");
 dataForm.addHandler((dataFromForm) => {
     const promiseData = weatherProcessor.getData(dataFromForm);
     promiseData.then(data => temperatureList.showTemperatures(data));

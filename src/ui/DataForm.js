@@ -1,5 +1,4 @@
 export class DataForm {
-    // TODO
     #formElement;
     #sityElement;
     #dateFromElement;
@@ -17,9 +16,17 @@ export class DataForm {
         this.#hoursToElement = document.getElementById(params.idTimeTo);
         this.#errorMessageElem = document.getElementById(params.idErrorMessage);
 
-        //TODO
     }
     addHandler(processFun) {
-        //TODO
+        this.#formElement.addEventListener("submit", (event) => {
+            event.defaultPrevented();
+            const weatherRequest = {};
+            weatherRequest.sity = this.#sityElement.value;
+            weatherRequest.dateFrom = this.#dateFromElement.value;
+            weatherRequest.dateTo = this.#dateToElement.value;
+            weatherRequest.hoursFrom = this.#hoursFromElement.value;
+            weatherRequest.hoursTo = this.#hoursToElement.value;
+            processFun(weatherRequest);
+    })
     }
 }
