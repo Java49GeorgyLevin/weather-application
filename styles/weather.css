@@ -1,6 +1,7 @@
 body {
     display: flex;
     flex-direction: row;
+    background-color: whitesmoke;
 }
 .two-inputs {
     display: flex;
@@ -13,6 +14,31 @@ select {
     margin-bottom: 4vh;
 }
 .data-output {
-    padding: 10vh;
+    padding: 4vh;
     overflow-y: scroll;
+    height: 80vh;
+}
+header {
+    text-align: center;
+    font-style: oblique;
+    background-color: darkcyan;
+    color: whitesmoke;
+}
+.paragraph-data {
+    color: darkcyan;
+}
+.details-list {
+    margin: 2vw;
+}
+li {
+    list-style-type: none;
+}
+.p-input-text {
+    margin-top: 1vh;
+    margin-bottom: 3vh;
+}
+.weather-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }

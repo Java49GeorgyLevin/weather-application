@@ -4,55 +4,68 @@ export class WeatherDataProcessor {
     #baseParams;
 
 constructor() {
-    this.#cityGeocodes = [{city:"Tiberias", latitude: 32.7922, longitude: 35.5312},
-    {city:"Petah Tikva", latitude: 32.0866, longitude: 34.8851},
-    {city:"Maale Adumim", latitude: 31.777369, longitude: 35.297955},
-    {city:"Gedera", latitude: 31.81456 , longitude: 34.77998},
-    {city:"Eilat", latitude: 29.5581, longitude: 34.9482}];
+    this.#cityGeocodes = [{city: "Tiberias", latitude: 32.7922, longitude: 35.5312},
+    {city: "Petah Tikva", latitude: 32.0866, longitude: 34.8851},
+    {city: "Maale Adumim", latitude: 31.777369, longitude: 35.297955},
+    {city: "Gedera", latitude: 31.81456 , longitude: 34.77998},
+    {city: "Eilat", latitude: 29.5581, longitude: 34.9482},
+    {city: "Rehovot", latitude: 31.8928, longitude: 34.8113},
+    {city: "Haifa", latitude: 32.7940, longitude: 34.9896},
+    {city: "Jerusalem", latitude: 31.7683, longitude: 35.2137},
+    {city: "Tel-Aviv", latitude: 32.0853, longitude: 34.7818},
+    {city: "Beit Zera", latitude: 32.689296, longitude: 35.574062},
+    {city: "Kiryat Yam", latitude: 32.849276, longitude: 35.068929},
+];
     this.#baseUrl = "https://api.open-meteo.com/v1/gfs?";
     this.#baseParams = "&hourly=temperature_2m&timezone=IST&";
-
-
 }
-    getData(requestObject) {
-        //{city, dateFrom, dateTo, hoursFrom, hoursTo}
-        // this.#cityGeocodes.filter(obj => {
 
-        //     requestObject.sity
-        // })
+    getListCities() {
+        return this.#cityGeocodes.map(obj => obj.city).sort();
+    }
+
+    async getData(requestObject) {
         const url = this.getUrl(requestObject);
-        const promiseResponse = fetch(url);
-        return this.processData(promiseResponse.then(response => response.json()));
+        const response = await fetch(url);
+        return this.processData(await response.json(), requestObject);
 
     }
     getUrl(requestObject) {
-        const whatCity = this.#cityGeocodes.filter(obj => {
-            return requestObject.city == obj.city;
-        })
-        const latitude = whatCity[0].latitude;
-        const longitude = whatCity[0].longitude;
+        const whatCity = this.#cityGeocodes.find(obj =>
+            requestObject.selectCity == obj.city);
+        const latitude = whatCity.latitude;
+        const longitude = whatCity.longitude;
         const dateFrom = requestObject.dateFrom;
         const dateTo = requestObject.dateTo;
         const url = `${this.#baseUrl}latitude=${latitude}&longitude=${longitude}${this.#baseParams}start_date=${dateFrom}&end_date=${dateTo}`
         return url;
     }
-    processData(promiseData) {
-        return promiseData(data => {
-            //TODO
-           // return {city, objects: [{date,hour,temperature},...]}
-        })
+ 
+    processData(data, requestObject) {
+            const times = data.hourly.time;
+            const temperatures = data.hourly.temperature_2m;
+            const indexFrom = getIndexOfDate(times, requestObject.dateFrom);
+            const indexTo = getIndexOfDate(times, requestObject.dateTo) + 24;
+            const timesSelectedDates = times.slice(indexFrom, indexTo);
+            const timesSelectedDatesHours = timesSelectedDates.filter((time, index) =>
+            {
+                index = index % 24;
+                return index >= requestObject.timeFrom && index <= requestObject.timeTo;
+            } )
+            const temperaturesSelectedDates = temperatures.slice(indexFrom, indexTo);
+            const temperaturesDatesHours = temperaturesSelectedDates.filter((time, index) =>
+            {
+                index = index % 24;
+                return index >= requestObject.timeFrom && index <= requestObject.timeTo;
+            } )
+            const hourlyObjects = timesSelectedDatesHours.map((dt, index) => {
+                const dateTime = dt.split("T");
+                return {date: dateTime[0], hour: dateTime[1], temperature: temperaturesDatesHours[index]}
+            } )
+            
+           return {city: requestObject.selectCity, hourlyObjects};
     }
 }
-
-processData(promiseData) {
-    return promiseData.then(data => {
-        return data.hourly.time.map((cur, index) => {
-            const dateTime = cur.split("T");
-            return {
-                date: dateTime[0],
-                hour: dateTime[1],
-                temperature: data.hourly.temperature_2m[index]
-            }
-        });
-    })        
+function getIndexOfDate(times, date) {
+    return times.findIndex(t => t.includes(date));
 }

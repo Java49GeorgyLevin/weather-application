@@ -1,32 +1,45 @@
 export class DataForm {
     #formElement;
-    #sityElement;
+    #cityElement;
+    #inputElements;
     #dateFromElement;
     #dateToElement;
     #hoursFromElement;
     #hoursToElement;
     #errorMessageElem;
+    #arCities;
 
     constructor (params) {
         this.#formElement = document.getElementById(params.idEnterData);
-        this.#sityElement = document.getElementById(params.idSelectSity);
+        this.#cityElement = document.getElementById(params.idSelectCity);
+        this.#inputElements = document.querySelectorAll(`#${params.idEnterData} [name]`);
         this.#dateFromElement = document.getElementById(params.idDateFrom);
         this.#dateToElement = document.getElementById(params.idDateTo);
         this.#hoursFromElement = document.getElementById(params.idTimeFrom);
         this.#hoursToElement = document.getElementById(params.idTimeTo);
         this.#errorMessageElem = document.getElementById(params.idErrorMessage);
-
+        this.#arCities = params.arCities;
     }
+
     addHandler(processFun) {
         this.#formElement.addEventListener("submit", (event) => {
-            event.defaultPrevented();
-            const weatherRequest = {};
-            weatherRequest.sity = this.#sityElement.value;
-            weatherRequest.dateFrom = this.#dateFromElement.value;
-            weatherRequest.dateTo = this.#dateToElement.value;
-            weatherRequest.hoursFrom = this.#hoursFromElement.value;
-            weatherRequest.hoursTo = this.#hoursToElement.value;
-            processFun(weatherRequest);
-    })
+            event.preventDefault();
+            const inputData = Array.from(this.#inputElements)
+            .reduce((res, cur) => {
+                res[cur.name] = cur.value;
+                return res;
+            } ,{});
+            processFun(inputData);
+        })
+    }
+
+    updateHTML() {
+        this.#cityElement.innerHTML += this.listCities();
+    }
+
+    listCities() {
+        return this.#arCities.map(city =>
+            `<option value="${city}">${city}</option>`
+            ).join('');
     }
 }

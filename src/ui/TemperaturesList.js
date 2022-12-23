@@ -1,15 +1,22 @@
 export class TemperaturesList {
     #listElement;
-    constructor(idList) {
+    #cityElement;
+    constructor(idList, idSelectedCity) {
         this.#listElement = document.getElementById(idList);
+        this.#cityElement = document.getElementById(idSelectedCity);
     }
-    showTemperatures(dataArray) {
-        this.#listElement.innerHTML = listOfTemperatures(dataArray);
+    showTemperatures(dataObj) {
+        console.log(dataObj);
+        this.#cityElement.innerHTML = dataObj.city;
+       
+        this.#listElement.innerHTML = listOfTemperatures(dataObj.hourlyObjects);
     }
 }
-function listOfTemperatures(dataArray) {
-    return dataArray.map(el => {
-        return `<li class="details-list">
-                Data: ${el.date} Time: ${el.hour} Temperature: ${el.temperature}</p>
-                </li>`});
+function listOfTemperatures(arHourlyObj) {
+    return arHourlyObj.map(obj => 
+        `<li class="details-list">
+       <p class="paragraph-data"> Data: ${obj.date} </p>
+       <p class="paragraph-data"> Time: ${obj.hour} </p>
+       <p class="paragraph-data"> Temperature: ${obj.temperature}&deg;C </p>
+        </li>`).join('');
 }
