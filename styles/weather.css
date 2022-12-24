@@ -42,3 +42,6 @@ li {
     flex-direction: row;
     flex-wrap: wrap;
 }
+.error {
+    border-color: red;
+}

@@ -9,7 +9,7 @@ const params = {idEnterData: "enter-data", idSelectCity: "select-city",
 idDateFrom: "date-from", idDateTo: "date-to",
 idTimeFrom: "time-from", idTimeTo: "time-to", idErrorMessage: "error-message", arCities};
 const dataForm = new DataForm(params);
-dataForm.updateHTML();
+// dataForm.updateHTML();
 const temperatureList = new TemperaturesList("weather-list", "selected-city");
 dataForm.addHandler(async (dataFromForm) => {
     const promiseData = weatherProcessor.getData(dataFromForm);

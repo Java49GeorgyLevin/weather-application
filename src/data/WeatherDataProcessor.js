@@ -47,17 +47,30 @@ constructor() {
             const indexFrom = getIndexOfDate(times, requestObject.dateFrom);
             const indexTo = getIndexOfDate(times, requestObject.dateTo) + 24;
             const timesSelectedDates = times.slice(indexFrom, indexTo);
-            const timesSelectedDatesHours = timesSelectedDates.filter((time, index) =>
+            const timesSelectedDatesHours = index24(timesSelectedDates);
+            // .filter((time, index) =>
+            // {
+            //     index = index % 24;
+            //     return index >= requestObject.timeFrom && index <= requestObject.timeTo;
+            // } )
+
+            function index24(ar) {
+                return ar.filter((xxx, index) =>
             {
                 index = index % 24;
                 return index >= requestObject.timeFrom && index <= requestObject.timeTo;
             } )
+
+            }
+
             const temperaturesSelectedDates = temperatures.slice(indexFrom, indexTo);
-            const temperaturesDatesHours = temperaturesSelectedDates.filter((time, index) =>
-            {
-                index = index % 24;
-                return index >= requestObject.timeFrom && index <= requestObject.timeTo;
-            } )
+            const temperaturesDatesHours = index24(temperaturesSelectedDates);
+            // .filter((time, index) =>
+            // {
+            //     index = index % 24;
+            //     return index >= requestObject.timeFrom && index <= requestObject.timeTo;
+            // } )
+
             const hourlyObjects = timesSelectedDatesHours.map((dt, index) => {
                 const dateTime = dt.split("T");
                 return {date: dateTime[0], hour: dateTime[1], temperature: temperaturesDatesHours[index]}
