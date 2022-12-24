@@ -13,6 +13,9 @@ export class DataForm {
     #hourTo;
     #errorMessageElem;
     #arCities;
+    #period;
+    #limitDayToday;
+    #limitDayInFuture;
     constructor (params) {
         this.#formElement = document.getElementById(params.idEnterData);
         this.#cityElement = document.getElementById(params.idSelectCity);
@@ -23,6 +26,7 @@ export class DataForm {
         this.#hoursToElement = document.getElementById(params.idTimeTo);
         this.#errorMessageElem = document.getElementById(params.idErrorMessage);
         this.#arCities = params.arCities;
+        this.#period = params.period;
         this.onChangeDate();
         this.onChangeHours();
         this.updateHTML();
@@ -51,12 +55,14 @@ export class DataForm {
         const date = event.target.value;
         if(event.target == this.#dateFromElement){
             if(this.#dateFrom && date > this.#dateFrom){
+                this.#dateFrom = undefined;
                 showErrorMessage(event.target, "date from must be <= date to", this.#errorMessageElem)
             } else {
                 this.#dateFrom = date;
             }
         } else {
             if(this.#dateTo && date > this.#dateTo) {
+                this.#dateTo = undefined;
                 showErrorMessage(event.target, "date to must be >= date from", this.#errorMessageElem)
             } else {
                 this.#dateTo = date;
@@ -65,28 +71,48 @@ export class DataForm {
     }
     checkChangeHours(event) {
         const hour = +event.target.value;
-        if(event.target == this.#hoursFromElement) {
-            if(this.#hourTo && hour > this.#hourTo) {
-                showErrorMessage(event.target, "hour from must be <= hour to",this.#errorMessageElem)
-            } else {
-                this.#hourFrom = hour;
-            }
+        if(hour < 0 || hour > 23) {
+            showErrorMessage(event.target, "hour must be 0 - 23", this.#errorMessageElem)
         } else {
-            if(this.#hourFrom && hour < this.#hourFrom) {
-                showErrorMessage(event.target, "hours to must be >= hour from",this.#errorMessageElem)
-            }else {
-                this.#hourTo = hour;
+            if(event.target == this.#hoursFromElement) {
+                if(this.#hourTo && hour > this.#hourTo) {
+                    this.#hourFrom = undefined;
+                    showErrorMessage(event.target, "hour from must be <= hour to",this.#errorMessageElem)
+             } else {
+                  this.#hourFrom = hour;
+                }
+         } else {
+                if(this.#hourFrom && hour < this.#hourFrom) {
+                    this.#hourTo = undefined;
+                    showErrorMessage(event.target, "hours to must be >= hour from",this.#errorMessageElem)
+             } else {
+                    this.#hourTo = hour;
+                }
             }
         }
     }
 
     updateHTML() {
         this.#cityElement.innerHTML += this.listCities();
+        const daysLimits = this.getPeriodLimits();
+        this.#dateFromElement.min = daysLimits.limitDayToday;
+        this.#dateFromElement.max = daysLimits.limitDayInFuture;
+        this.#dateToElement.min = daysLimits.limitDayToday;
+        this.#dateToElement.max = daysLimits.limitDayInFuture;
     }
 
     listCities() {
         return this.#arCities.map(city =>
             `<option value="${city}">${city}</option>`
             ).join('');
+    }
+
+    getPeriodLimits(){
+        const date = new Date();
+        this.#limitDayToday = date.toISOString().substring(0,10);
+        const day = date.getDate();
+        date.setDate(day + this.#period);
+        this.#limitDayInFuture = date.toISOString().substring(0,10);
+        return {limitDayToday: this.#limitDayToday, limitDayInFuture: this.#limitDayInFuture}
     }
 }

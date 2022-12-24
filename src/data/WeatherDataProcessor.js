@@ -18,6 +18,7 @@ constructor() {
 ];
     this.#baseUrl = "https://api.open-meteo.com/v1/gfs?";
     this.#baseParams = "&hourly=temperature_2m&timezone=IST&";
+    this.periodDayFuture();
 }
 
     getListCities() {
@@ -77,6 +78,9 @@ constructor() {
             } )
             
            return {city: requestObject.selectCity, hourlyObjects};
+    }
+    periodDayFuture() {
+        return 17;
     }
 }
 function getIndexOfDate(times, date) {

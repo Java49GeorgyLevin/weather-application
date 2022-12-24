@@ -6,9 +6,7 @@ export class TemperaturesList {
         this.#cityElement = document.getElementById(idSelectedCity);
     }
     showTemperatures(dataObj) {
-        console.log(dataObj);
         this.#cityElement.innerHTML = dataObj.city;
-       
         this.#listElement.innerHTML = listOfTemperatures(dataObj.hourlyObjects);
     }
 }
